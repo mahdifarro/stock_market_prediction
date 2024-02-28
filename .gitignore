@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+Dataset/stock_news/
+Source/Data/
+Source/Model/
 __pycache__/
 *.py[cod]
 *$py.class
