@@ -39,9 +39,14 @@ def preprocess_dataset(PATH='Dataset/stock_news/stock_news.csv'):
   
 def load():
     
-    train_path = 'Source/Data/Train/train_stock_news.csv'
-    test_path = 'Source/Data/Test/test_stock_news.csv'
-    valid_path = 'Source/Data/Valid/valid_stock_news.csv'
+    # train_path = 'Source/Data/Train/train_stock_news.csv'
+    train_path = os.path.join('Data', 'Train', 'train_stock_news.csv')
+    # test_path = 'Source/Data/Test/test_stock_news.csv'
+    test_path = os.path.join('Data', 'Test', 'test_stock_news.csv')
+
+    # valid_path = 'Source/Data/Valid/valid_stock_news.csv'
+    valid_path = os.path.join('Data', 'Valid', 'valid_stock_news.csv')
+
     
     df_train = pd.read_csv(os.path.join(os.getcwd(), train_path))
     
