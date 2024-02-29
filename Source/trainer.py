@@ -1,6 +1,6 @@
 from transformers import BertTokenizer, BertModel, get_linear_schedule_with_warmup
 from transformers import DataCollatorWithPadding
-
+from modeling import *
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
@@ -8,7 +8,8 @@ from torch import nn, optim
 
 import numpy as np
 import pandas as pd
-
+from tqdm import tqdm, trange
+from torch.optim import Adam  
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
 
@@ -101,3 +102,21 @@ def get_predictions(model, data_loader):
     
     return news_texts, predictions, prediction_probs, real_values
     
+def train_doc(model, dataloader, loss, epochs=80, lr=1e-3):
+    optimizer = Adam(model.parameters(), lr=lr)
+    training_losses = []
+    
+    for epoch in trange(epochs, desc="Epochs"):
+        epoch_losses = []
+        for batch in dataloader:
+            
+            model.zero_grad()
+            logits = model.forward(**batch)
+            batch_loss = loss(logits)
+            epoch_losses.append(batch_loss.item())
+            batch_loss.backward()
+            optimizer.step()
+                
+        training_losses.append(np.mean(epoch_losses))
+    
+    return training_losses

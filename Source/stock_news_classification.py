@@ -39,7 +39,24 @@ def show_confusion_matrix(confusion_matrix):
     plt.ylabel('True sentiment')
     plt.xlabel('Predicted Sentiment')
     
-    
+def train_doc2vec():
+    train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news.csv')
+    df = preprocess.load(train_path)
+    example_df = preprocess.tokenize_text(df)
+    vocab = Vocab([tok for tokens in example_df.tokens for tok in tokens], min_count=1)
+    example_df = preprocess.clean_tokens(example_df, vocab)
+    noise = NoiseDistribution(vocab)
+    loss = NegativeSampling()
+    examples = example_generator(example_df, context_size=5, noise=noise, n_negative_samples=5, vocab=vocab)
+    dataset = NCEDataset(examples)
+    dataloader = DataLoader(dataset, batch_size=64, drop_last=True, shuffle=True)  # TODO bigger batch size when not dummy data
+    model = DistributedMemory(vec_dim=50,
+                          n_docs=len(example_df),
+                          n_words=len(vocab.words))
+    model = model.to(device)
+    loss = loss.to(device)
+    train_loss = train_doc(model, dataloader, loss)
+    print("TRAINING LOSS:", np.mean(train_loss))
 
 def tokenize_datasets(tokenizer):
     class_names = ['Negative', 'Neutral', 'Positive']
@@ -96,7 +113,8 @@ def tokenize_datasets(tokenizer):
     df_cm = pd.DataFrame(cm, index=class_names, columns=class_names)
     show_confusion_matrix(df_cm)
 
-tokenize_datasets(tokenizer)  
+# tokenize_datasets(tokenizer)
+train_doc2vec()
 
 # sample_text = "Text Processing with Machine learning is moving at a rapid speed"
 

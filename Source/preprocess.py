@@ -1,6 +1,9 @@
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
 
 def preprocess_dataset(PATH='Dataset/stock_news/stock_news.csv'):
     
@@ -36,28 +39,57 @@ def preprocess_dataset(PATH='Dataset/stock_news/stock_news.csv'):
     df_val.to_csv(os.path.join(os.getcwd(), valid_path))
     
     return df
-  
-def load():
+
+def clean_tokens(df, vocab):
+    df['length'] = df.tokens.apply(len)
+    df['clean_tokens'] = df.tokens.apply(lambda x: [t for t in x if t in vocab.freqs.keys()])
+    df['clean_length'] = df.clean_tokens.apply(len)
+    return df
+
+def tokenize_text(df):
+    df["tokens"] = df.headline.str.lower().str.strip().apply(lambda x: [token.text.strip() for token in nlp(x) if token.text.isalnum()])
+    return df
+
+def save(df, path):
+    # train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news_tokens.csv')
+    # # test_path = 'Source/Data/Test/test_stock_news.csv'
+    # test_path = os.path.join('Source', 'Data', 'Test', 'test_stock_news_tokens.csv')
+
+    # # valid_path = 'Source/Data/Valid/valid_stock_news.csv'
+    # valid_path = os.path.join('Source', 'Data', 'Valid', 'valid_stock_news_tokens.csv')
+    
+    df.to_csv(os.path.join(os.getcwd(), path))
+    
+    # df_test.to_csv(os.path.join(os.getcwd(), test_path))
+    
+    # df_val.to_csv(os.path.join(os.getcwd(), valid_path))
+    
+    
+def load(path):
     
     # train_path = 'Source/Data/Train/train_stock_news.csv'
-    train_path = os.path.join('Data', 'Train', 'train_stock_news.csv')
-    # test_path = 'Source/Data/Test/test_stock_news.csv'
-    test_path = os.path.join('Data', 'Test', 'test_stock_news.csv')
+    # train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news.csv')
+    # # test_path = 'Source/Data/Test/test_stock_news.csv'
+    # test_path = os.path.join('Source', 'Data', 'Test', 'test_stock_news.csv')
 
-    # valid_path = 'Source/Data/Valid/valid_stock_news.csv'
-    valid_path = os.path.join('Data', 'Valid', 'valid_stock_news.csv')
+    # # valid_path = 'Source/Data/Valid/valid_stock_news.csv'
+    # valid_path = os.path.join('Source', 'Data', 'Valid', 'valid_stock_news.csv')
 
     
-    df_train = pd.read_csv(os.path.join(os.getcwd(), train_path))
+    df= pd.read_csv(os.path.join(os.getcwd(), path))
     
-    df_test = pd.read_csv(os.path.join(os.getcwd(), test_path))
+    # df_test = pd.read_csv(os.path.join(os.getcwd(), test_path))
     
-    df_val = pd.read_csv(os.path.join(os.getcwd(), valid_path))
+    # df_val = pd.read_csv(os.path.join(os.getcwd(), valid_path))
     
-    return df_train, df_test, df_val
+    return df
     
-if __name__ == '__main__':
-    df = preprocess_dataset()
-    print(df)
+# if __name__ == '__main__':
+#     df_train, df_test, df_val = load()
+#     df_tt = tokenize_text(df_train)
+#     df_t = tokenize_text(df_test)
+#     df_v = tokenize_text(df_val)
+#     save(df_tt, df_t, df_v)
+    
 
 
