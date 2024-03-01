@@ -1,6 +1,7 @@
 from dataloader import *
 from modeling import *
 from trainer import *
+from utils.result import *
 import os
 from transformers import BertTokenizer, BertModel, get_linear_schedule_with_warmup
 
@@ -33,12 +34,17 @@ tokenizer = BertTokenizer.from_pretrained(pre_trained_model_ckpt)
 
 
 def show_confusion_matrix(confusion_matrix):
+    sns.set()
     hmap = sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='Blues')
     hmap.yaxis.set_ticklabels(hmap.yaxis.get_ticklabels(), rotation=0, ha='right')
     hmap.xaxis.set_ticklabels(hmap.xaxis.get_ticklabels(), rotation=30, ha='right')
     plt.ylabel('True sentiment')
     plt.xlabel('Predicted Sentiment')
     
+    # Save the figure
+    plt.savefig('heatmap.png', dpi=300, bbox_inches='tight')
+
+    plt.close()  # Close the figure to free memory, especially important in scripts
 def train_doc2vec():
     train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news.csv')
     df = preprocess.load(train_path)
@@ -57,10 +63,21 @@ def train_doc2vec():
     loss = loss.to(device)
     train_loss = train_doc(model, dataloader, loss)
     print("TRAINING LOSS:", np.mean(train_loss))
+    visualize_loss(training_losses=train_loss)
+    example_2d = pca_2d(model.paragraph_matrix.data.detach().cpu())
+    chart = alt.Chart(example_2d).mark_point().encode(x="x", y="y")
+    chart.save('pca_result_for_doc2vec.html')
 
 def tokenize_datasets(tokenizer):
+    train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news.csv')
+    test_path = os.path.join('Source', 'Data', 'Test', 'test_stock_news.csv')
+    valid_path = os.path.join('Source', 'Data', 'Valid', 'valid_stock_news.csv')
     class_names = ['Negative', 'Neutral', 'Positive']
-    df_train, df_test, df_val = load()
+    # df_train, df_test, df_val = load()
+    df_train = load(train_path)
+    df_test = load(test_path)
+    df_val = load(valid_path)
+    
     # print(df_train.headline.to_list())
     
     train_data_loader = create_data_loader(df_train, tokenizer)
@@ -113,7 +130,7 @@ def tokenize_datasets(tokenizer):
     df_cm = pd.DataFrame(cm, index=class_names, columns=class_names)
     show_confusion_matrix(df_cm)
 
-# tokenize_datasets(tokenizer)
+tokenize_datasets(tokenizer)
 train_doc2vec()
 
 # sample_text = "Text Processing with Machine learning is moving at a rapid speed"

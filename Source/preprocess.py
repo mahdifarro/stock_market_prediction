@@ -14,7 +14,15 @@ def preprocess_dataset(PATH='Dataset/stock_news/stock_news.csv'):
     
     df = pd.read_csv(os.path.join(os.getcwd(), PATH))
     
+    # Count the number of samples for each sentiment category
+    sentiment_counts = df['label'].value_counts()
 
+    # Convert the Series object into a DataFrame
+    sentiment_counts_df = sentiment_counts.reset_index()
+    sentiment_counts_df.columns = ['sentiment', 'count']
+
+    # Display the summary DataFrame
+    print(sentiment_counts_df)
     
     for index, row in df.iterrows():
         
@@ -84,12 +92,8 @@ def load(path):
     
     return df
     
-# if __name__ == '__main__':
-#     df_train, df_test, df_val = load()
-#     df_tt = tokenize_text(df_train)
-#     df_t = tokenize_text(df_test)
-#     df_v = tokenize_text(df_val)
-#     save(df_tt, df_t, df_v)
+if __name__ == '__main__':
+    df = preprocess_dataset()
     
 
 
