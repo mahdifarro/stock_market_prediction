@@ -118,5 +118,6 @@ def train_doc(model, dataloader, loss, epochs=80, lr=1e-3):
             optimizer.step()
                 
         training_losses.append(np.mean(epoch_losses))
+        torch.save(model.state_dict(), os.path.join(os.getcwd(), 'Source/Model/doc_2_vec_model.bin'))
     
     return training_losses

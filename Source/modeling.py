@@ -87,6 +87,10 @@ class SentimentClassifier(nn.Module):
     def __init__(self, n_classes):
         super(SentimentClassifier, self).__init__()
         self.bert = BertModel.from_pretrained(pre_trained_model_ckpt, return_dict=False)
+        num_parameters = self.bert.num_parameters()
+        print(f"The model has {num_parameters} parameters.")
+        num_layers = self.bert.config.num_hidden_layers
+        print(f"The model has {num_layers} hidden layers.")
         self.drop = nn.Dropout(p=0.3)
         self.out = nn.Linear(self.bert.config.hidden_size, n_classes)
         

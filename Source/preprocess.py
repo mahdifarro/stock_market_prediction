@@ -45,6 +45,14 @@ def preprocess_dataset(PATH='Dataset/stock_news/stock_news.csv'):
     df_test.to_csv(os.path.join(os.getcwd(), test_path))
     
     df_val.to_csv(os.path.join(os.getcwd(), valid_path))
+    sentiment_counts = df_train['label'].value_counts()
+
+    # Convert the Series object into a DataFrame
+    sentiment_counts_df = sentiment_counts.reset_index()
+    sentiment_counts_df.columns = ['sentiment', 'count']
+
+    # Display the summary DataFrame
+    print(sentiment_counts_df)
     
     return df
 

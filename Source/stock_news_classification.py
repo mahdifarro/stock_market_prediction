@@ -124,11 +124,30 @@ def tokenize_datasets(tokenizer):
             torch.save(model.state_dict(), os.path.join(os.getcwd(), 'Source/Model/best_model.bin'))
             best_accuracy = val_acc
     y_news_texts, y_pred, y_pred_porbs, y_test = get_predictions(model, test_data_loader)
-    print(classification_report(y_test, y_pred, target_names=class_names))
+    report = classification_report(y_test, y_pred, target_names=class_names)
+    print(report)
     
+    
+    fig = plt.figure(figsize=(8, 6))
+    text = plt.text(0.5, 0.5, report, ha='center', va='center', wrap=True)
+    plt.axis('off')  # Turn off the axis
+
+    # Adjust layout
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+
+    # Save the figure
+    plt.savefig('classification_report.png', dpi=300, bbox_inches='tight')
+    plt.close(fig)  # Close the figure to free memory
     cm = confusion_matrix(y_test, y_pred)
     df_cm = pd.DataFrame(cm, index=class_names, columns=class_names)
     show_confusion_matrix(df_cm)
+
+
+print("Input data should be tokenized using the BERT tokenizer.")
+print("Each input should be transformed into input IDs, attention masks, and, for certain tasks, token type IDs.")
+example_text = "Example text input for BERT."
+encoded_input = tokenizer(example_text, return_tensors='pt')
+print("Example of tokenized input:", encoded_input)
 
 tokenize_datasets(tokenizer)
 train_doc2vec()
