@@ -1,6 +1,6 @@
 from transformers import BertTokenizer, BertModel, get_linear_schedule_with_warmup
 from transformers import DataCollatorWithPadding
-from modeling import *
+from modelling import *
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
@@ -20,7 +20,7 @@ RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+print(device)
 def train_model(model, data_loader, loss_fn, optimizer, device, scheduler, n_examples):
     model = model.train()
     losses = []
@@ -102,11 +102,12 @@ def get_predictions(model, data_loader):
     
     return news_texts, predictions, prediction_probs, real_values
     
-def train_doc(model, dataloader, loss, epochs=80, lr=1e-3):
+def train_doc(model, dataloader, loss, epochs=1, lr=1e-3):
+    print("Started Training")
     optimizer = Adam(model.parameters(), lr=lr)
     training_losses = []
     
-    for epoch in trange(epochs, desc="Epochs"):
+    for epoch in tqdm(range(epochs)):
         epoch_losses = []
         for batch in dataloader:
             
@@ -118,5 +119,10 @@ def train_doc(model, dataloader, loss, epochs=80, lr=1e-3):
             optimizer.step()
                 
         training_losses.append(np.mean(epoch_losses))
+        saving_path = os.path.join('..', 'saved_models')
+        os.makedirs(saving_path, exist_ok=True)
+        torch.save(model.state_dict(), os.path.join(saving_path, 'doc_2_vec_model.bin'))
+    print("Finished Training")
+    print("-------shape:", logits.cpu().detach().numpy().shape)
     
     return training_losses

@@ -87,6 +87,10 @@ class SentimentClassifier(nn.Module):
     def __init__(self, n_classes):
         super(SentimentClassifier, self).__init__()
         self.bert = BertModel.from_pretrained(pre_trained_model_ckpt, return_dict=False)
+        num_parameters = self.bert.num_parameters()
+        print(f"The model has {num_parameters} parameters.")
+        num_layers = self.bert.config.num_hidden_layers
+        print(f"The model has {num_layers} hidden layers.")
         self.drop = nn.Dropout(p=0.3)
         self.out = nn.Linear(self.bert.config.hidden_size, n_classes)
         
@@ -118,7 +122,7 @@ def example_generator(df, context_size, noise, n_negative_samples, vocab):
 
 if __name__ == '__main__':
     train_path = os.path.join('Source', 'Data', 'Train', 'train_stock_news.csv')
-    df = preprocess.load(train_path)
+    df = preprocess.load_dataset()
     example_df = preprocess.tokenize_text(df)
     print(example_df)
     vocab = Vocab([tok for tokens in example_df.tokens for tok in tokens], min_count=1)
