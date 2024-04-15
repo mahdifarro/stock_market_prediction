@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-3f05ff4c6564752148b04953387898c4"}, "mark": {"type": "bar"}, "encoding": {"x": {"field": "epoch", "type": "quantitative"}, "y": {"field": "training_loss", "scale": {"type": "log"}, "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v5.16.3.json", "datasets": {"data-3f05ff4c6564752148b04953387898c4": [{"epoch": 0, "training_loss": 3.3446434654311963}, {"epoch": 1, "training_loss": 1.7289066325270153}, {"epoch": 2, "training_loss": 1.263680061585623}, {"epoch": 3, "training_loss": 0.9996993603833234}, {"epoch": 4, "training_loss": 0.8210954699177964}, {"epoch": 5, "training_loss": 0.6879113424247226}, {"epoch": 6, "training_loss": 0.5820093605576492}, {"epoch": 7, "training_loss": 0.49459344254364723}, {"epoch": 8, "training_loss": 0.4181332829389762}, {"epoch": 9, "training_loss": 0.35303801010691144}, {"epoch": 10, "training_loss": 0.2956020407824717}, {"epoch": 11, "training_loss": 0.2454012181865931}, {"epoch": 12, "training_loss": 0.20180518664171848}, {"epoch": 13, "training_loss": 0.16451147296145854}, {"epoch": 14, "training_loss": 0.13222962344465922}, {"epoch": 15, "training_loss": 0.10573050126169051}, {"epoch": 16, "training_loss": 0.0834712424540599}, {"epoch": 17, "training_loss": 0.0656029159851587}, {"epoch": 18, "training_loss": 0.051307549398648504}, {"epoch": 19, "training_loss": 0.04006893264579932}, {"epoch": 20, "training_loss": 0.030985526488618947}, {"epoch": 21, "training_loss": 0.02417504349661508}, {"epoch": 22, "training_loss": 0.018813472627321394}, {"epoch": 23, "training_loss": 0.01472541523432388}, {"epoch": 24, "training_loss": 0.011592027598046213}, {"epoch": 25, "training_loss": 0.00909216139164078}, {"epoch": 26, "training_loss": 0.007178264054698981}, {"epoch": 27, "training_loss": 0.005615919768013176}, {"epoch": 28, "training_loss": 0.004507646270244983}, {"epoch": 29, "training_loss": 0.0035837034200795178}, {"epoch": 30, "training_loss": 0.002830892868655963}, {"epoch": 31, "training_loss": 0.0022418072408203556}, {"epoch": 32, "training_loss": 0.0017919427683750404}, {"epoch": 33, "training_loss": 0.0014045503835334234}, {"epoch": 34, "training_loss": 0.0011341906704541353}, {"epoch": 35, "training_loss": 0.000897965423451497}, {"epoch": 36, "training_loss": 0.0007195674393278549}, {"epoch": 37, "training_loss": 0.0005711891388720905}, {"epoch": 38, "training_loss": 0.00045931547637017}, {"epoch": 39, "training_loss": 0.0003692210842819137}, {"epoch": 40, "training_loss": 0.0002950357882788161}, {"epoch": 41, "training_loss": 0.00023048611238037138}, {"epoch": 42, "training_loss": 0.00018614369101627233}, {"epoch": 43, "training_loss": 0.00014789355988943374}, {"epoch": 44, "training_loss": 0.00011989784563730002}, {"epoch": 45, "training_loss": 9.701279758602461e-05}, {"epoch": 46, "training_loss": 7.681273249234924e-05}, {"epoch": 47, "training_loss": 6.01411033566306e-05}, {"epoch": 48, "training_loss": 4.874589585536779e-05}, {"epoch": 49, "training_loss": 3.907217323448238e-05}, {"epoch": 50, "training_loss": 3.124566417061099e-05}, {"epoch": 51, "training_loss": 2.5090468349144974e-05}, {"epoch": 52, "training_loss": 2.0184064157775133e-05}, {"epoch": 53, "training_loss": 1.6088966579076654e-05}, {"epoch": 54, "training_loss": 1.299026439432571e-05}, {"epoch": 55, "training_loss": 1.0448309650400472e-05}, {"epoch": 56, "training_loss": 8.533445386945382e-06}, {"epoch": 57, "training_loss": 6.888894642216472e-06}, {"epoch": 58, "training_loss": 5.603456382135455e-06}, {"epoch": 59, "training_loss": 4.459457686950318e-06}, {"epoch": 60, "training_loss": 3.6331152350189192e-06}, {"epoch": 61, "training_loss": 3.0029134288830764e-06}, {"epoch": 62, "training_loss": 2.4233403791087177e-06}, {"epoch": 63, "training_loss": 1.9968317878022667e-06}, {"epoch": 64, "training_loss": 1.6591655171829842e-06}, {"epoch": 65, "training_loss": 1.3403389430539213e-06}, {"epoch": 66, "training_loss": 1.0991447279159985e-06}, {"epoch": 67, "training_loss": 9.101940854271458e-07}, {"epoch": 68, "training_loss": 7.644670061561963e-07}, {"epoch": 69, "training_loss": 6.443987432251857e-07}, {"epoch": 70, "training_loss": 5.34245098824633e-07}, {"epoch": 71, "training_loss": 4.4867515677456067e-07}, {"epoch": 72, "training_loss": 3.872718787784882e-07}, {"epoch": 73, "training_loss": 3.26725402706233e-07}, {"epoch": 74, "training_loss": 2.7594937097029527e-07}, {"epoch": 75, "training_loss": 2.376033638418896e-07}, {"epoch": 76, "training_loss": 2.0835289825539675e-07}, {"epoch": 77, "training_loss": 1.8045190958049486e-07}, {"epoch": 78, "training_loss": 1.577370306192295e-07}, {"epoch": 79, "training_loss": 1.3855256900987096e-07}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
